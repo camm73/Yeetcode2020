@@ -2,7 +2,7 @@ import boto3
 import json
 
 dynamodb = boto3.client('dynamodb', region_name='us-east-1')
-apiMgmt = boto3.client('apigatewaymanagementapi', region_name='us-east-1', endpoint_url='wss://8mvqn1b54i.execute-api.us-east-1.amazonaws.com/production/')
+apiMgmt = boto3.client('apigatewaymanagementapi', region_name='us-east-1', endpoint_url='https://8mvqn1b54i.execute-api.us-east-1.amazonaws.com/production/')
 TABLE = 'Yeetcode2020-Data'
 
 def lambda_handler(event, context):
@@ -106,8 +106,8 @@ def lambda_handler(event, context):
 
     # Send updated data to all clients
     for entry in clients:
-        clientId = entry['S']
-        send_to_client(ret_packet, clientId)
+        connId = entry['S']
+        send_to_client(ret_packet, connId)
 
     return {
         'statusCode': 200,
