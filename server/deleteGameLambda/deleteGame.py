@@ -3,6 +3,7 @@ import json
 import random
 
 dynamodb = boto3.client('dynamodb', region_name='us-east-1')
+apiMgmt = boto3.client('apigatewaymanagementapi', region_name='us-east-1', endpoint_url='https://8mvqn1b54i.execute-api.us-east-1.amazonaws.com/production/')
 TABLE = 'Yeetcode2020-Data'
 
 def lambda_handler(event, context):
@@ -19,6 +20,37 @@ def lambda_handler(event, context):
             "statusCode": 500,
             "body": "Party ID not included"
         }
+
+    # Get game object
+    try:
+        res = dynamodb.get_item(TableName=TABLE, Key={
+            'partyID': {
+                'S': partyID
+            }
+        })
+        if('Item' not in res):
+            return {
+                "statusCode": 200,
+                "body": "Game already deleted"
+            }
+    except Exception as err:
+        print(err)
+        return {
+            "statusCode": 500,
+            "body": "Party ID does not exist"
+        }
+
+    game_obj = res['Item']
+    clients = game_obj['clients']['L']
+
+    # Disconnect all users
+    for entry in clients:
+        connID = entry['S']
+        try:
+            apiMgmt.delete_connection(ConnectionId=connID)
+        except Exception as e:
+            print(e)
+            print('Failed to disconnect:', connID)
 
     
     # Insert empty object into database

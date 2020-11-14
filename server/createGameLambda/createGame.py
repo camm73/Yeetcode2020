@@ -3,6 +3,7 @@ import json
 import random
 
 dynamodb = boto3.client('dynamodb', region_name='us-east-1')
+apiMgmt = boto3.client('apigatewaymanagementapi', region_name='us-east-1', endpoint_url='https://8mvqn1b54i.execute-api.us-east-1.amazonaws.com/production/')
 TABLE = 'Yeetcode2020-Data'
 
 def get_party_id():
@@ -11,7 +12,7 @@ def get_party_id():
 
 
 def lambda_handler(event, context):
-
+    clientID = event['requestContext']['connectionId']
     data_packet = event['body']
     data_packet = json.loads(data_packet)
     print(data_packet)
@@ -55,7 +56,22 @@ def lambda_handler(event, context):
             "body": ""
         }
 
+    # Send response with party id to user
+    ret_packet = {
+        "action": "createSuccess",
+        "partyID": partyID
+    }
+
+    send_to_client(ret_packet, clientID)
+
     return {
         'statusCode': 200,
         'body': "DONE"
     }
+
+def send_to_client(data, connectionId):
+    # Send leaderboard to user
+    apiMgmt.post_to_connection(
+        Data=json.dumps(data),
+        ConnectionId=connectionId
+    )
