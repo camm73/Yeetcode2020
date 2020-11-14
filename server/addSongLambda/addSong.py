@@ -2,10 +2,12 @@ import boto3
 import json
 
 dynamodb = boto3.client('dynamodb', region_name='us-east-1')
+apiMgmt = boto3.client('apigatewaymanagementapi', region_name='us-east-1', endpoint_url='https://8mvqn1b54i.execute-api.us-east-1.amazonaws.com/production/')
 TABLE = 'Yeetcode2020-Data'
 
 def lambda_handler(event, context):
 
+    clientID = event['requestContext']['connectionId']
     data_packet = event['body']
     data_packet = json.loads(data_packet)
     print(data_packet)
@@ -83,13 +85,33 @@ def lambda_handler(event, context):
                         "N": "1"
                     }
                 },
-                UpdateExpression="set leaderboard.#uri = :v"
+                UpdateExpression="set leaderboard.#uri = :v",
+                ReturnValues='ALL_NEW'
             )
             print(update_res)
         except Exception as e:
             print(e)
 
+    updated_data = update_res['Attributes']
+    leaderboard = updated_data['leaderboard']['M']
+
+    ret_packet = {
+        "action": "leaderboardUpdate",
+        "leaderboard": leaderboard
+    }
+
+    # Send to client
+    send_to_client(ret_packet, clientID)
+
     return {
         'statusCode': 200,
         'body': "DONE"
     }
+
+
+def send_to_client(data, connectionId):
+    # Send leaderboard to user
+    apiMgmt.post_to_connection(
+        Data=json.dumps(data),
+        ConnectionId=connectionId
+    )

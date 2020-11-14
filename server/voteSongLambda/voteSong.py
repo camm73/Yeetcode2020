@@ -2,7 +2,7 @@ import boto3
 import json
 
 dynamodb = boto3.client('dynamodb', region_name='us-east-1')
-apiMgmt = boto3.client('apigatewaymanagementapi', region_name='us-east-1')
+apiMgmt = boto3.client('apigatewaymanagementapi', region_name='us-east-1', endpoint_url='wss://8mvqn1b54i.execute-api.us-east-1.amazonaws.com/production/')
 TABLE = 'Yeetcode2020-Data'
 
 def lambda_handler(event, context):
@@ -96,17 +96,27 @@ def lambda_handler(event, context):
 
     # Get updated data
     updated_data = update_res['Attributes']
+    leaderboard = updated_data['leaderboard']['M']
     clients = updated_data['clients']['L']
+
+    ret_packet = {
+        "action": "leaderboardUpdate",
+        "leaderboard": leaderboard
+    }
 
     # Send updated data to all clients
     for entry in clients:
         clientId = entry['S']
-        apiMgmt.post_to_connection(
-            Data=json.dumps(updated_data),
-            ConnectionId=clientId
-        )
+        send_to_client(ret_packet, clientId)
 
     return {
         'statusCode': 200,
         'body': "DONE"
     }
+
+def send_to_client(data, connectionId):
+    # Send leaderboard to user
+    apiMgmt.post_to_connection(
+        Data=json.dumps(data),
+        ConnectionId=connectionId
+    )
