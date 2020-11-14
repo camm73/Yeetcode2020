@@ -1,13 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
-import ImageIcon from '@material-ui/icons/Image';
-import WorkIcon from '@material-ui/icons/Work';
-import BeachAccessIcon from '@material-ui/icons/BeachAccess';
+import Post from './Post';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -20,5 +14,7 @@ const useStyles = makeStyles((theme) => ({
 export default function LeaderBoard() {
 	const classes = useStyles();
 
-	return <List className={classes.root}></List>;
+	const listItems = tracks.map((t) => <Post songName={t.songName} artist={t.artist} />);
+
+	return <List className={classes.root} {...listItems}></List>;
 }
