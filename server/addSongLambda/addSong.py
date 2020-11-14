@@ -94,14 +94,17 @@ def lambda_handler(event, context):
 
     updated_data = update_res['Attributes']
     leaderboard = updated_data['leaderboard']['M']
+    clients = updated_data['clients']['L']
 
     ret_packet = {
         "action": "leaderboardUpdate",
         "leaderboard": leaderboard
     }
 
-    # Send to client
-    send_to_client(ret_packet, clientID)
+    # Send to clients
+    for entry in clients:
+        connID = entry['S']
+        send_to_client(ret_packet, connID)
 
     return {
         'statusCode': 200,
