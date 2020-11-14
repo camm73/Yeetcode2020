@@ -6,10 +6,8 @@ dynamodb = boto3.client('dynamodb', region_name='us-east-1')
 TABLE = 'Yeetcode2020-Data'
 
 def get_party_id():
-    partyID = str(random.randint(0, (10**6)-1))  # Generate 9 digit code
-    if(len(partyID) < 9):
-        remain = 9 - len(partyID)
-        partyID = '0'*remain + partyID
+    partyID = str(random.randint(10**5, (10**6)-1))  # Generate 9 digit code
+    return partyID
 
 
 def lambda_handler(event, context):
@@ -29,10 +27,12 @@ def lambda_handler(event, context):
                     'S': partyID
                 }
             })
+            if('Item' not in res):
+                break
             partyID = get_party_id()
         except Exception as err:
-            # Break if partyID is unique
-            break
+            print(err)
+            break  # TODO: Probably want to just return error
     
     # Insert empty object into database
     try:

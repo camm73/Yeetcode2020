@@ -2,6 +2,7 @@ import boto3
 import json
 
 dynamodb = boto3.client('dynamodb', region_name='us-east-1')
+apiMgmt = boto3.client('apigatewaymanagementapi', region_name='us-east-1')
 TABLE = 'Yeetcode2020-Data'
 
 def lambda_handler(event, context):
@@ -81,7 +82,8 @@ def lambda_handler(event, context):
                             "N": vote_val
                         }
                     },
-                    UpdateExpression="set leaderboard.#uri = leaderboard.#uri + :v"
+                    UpdateExpression="set leaderboard.#uri = leaderboard.#uri + :v",
+                    ReturnValues='ALL_NEW'
                 )
                 print(update_res)
             except Exception as e:
@@ -91,6 +93,18 @@ def lambda_handler(event, context):
             "statusCode": 500,
             "body": "Song URI doesn't exist in leaderboard"
         }
+
+    # Get updated data
+    updated_data = update_res['Attributes']
+    clients = updated_data['clients']['L']
+
+    # Send updated data to all clients
+    for entry in clients:
+        clientId = entry['S']
+        apiMgmt.post_to_connection(
+            Data=json.dumps(updated_data),
+            ConnectionId=clientId
+        )
 
     return {
         'statusCode': 200,
