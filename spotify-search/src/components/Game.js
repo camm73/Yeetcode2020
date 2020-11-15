@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function LeaderBoard() {
+export default function Game() {
 	const classes = useStyles();
 
 	const listItems = tracks.map((t) => <Post songName={t.songName} artist={t.artist} />);

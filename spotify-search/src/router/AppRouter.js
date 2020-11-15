@@ -5,6 +5,8 @@ import RedirectPage from '../components/RedirectPage';
 import Dashboard from '../components/Dashboard';
 import NotFoundPage from '../components/NotFoundPage';
 import JoinGame from '../components/JoinGame';
+import LeaderBoard from '../components/Game';
+import Game from '../components/Game';
 
 class AppRouter extends React.Component {
 	state = {
@@ -60,6 +62,10 @@ class AppRouter extends React.Component {
 						<Route
 							path="/join"
 							render={(props) => <JoinGame isValidSession={this.isValidSession} {...props} />}
+						/>
+						<Route
+							path="/game"
+							render={(props) => <Game isValidSession={this.isValidSession} {...props} />}
 						/>
 						<Route component={NotFoundPage} />
 					</Switch>
