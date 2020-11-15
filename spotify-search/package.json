@@ -18,7 +18,8 @@
     "react-router-dom": "5.2.0",
     "react-scripts": "3.4.3",
     "redux": "4.0.5",
-    "redux-thunk": "2.3.0"
+    "redux-thunk": "2.3.0",
+    "websocket": "^1.0.32"
   },
   "scripts": {
     "start": "react-scripts start",

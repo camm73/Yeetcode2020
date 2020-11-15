@@ -14,6 +14,7 @@ import SearchForm from './SearchForm';
 import Header from './Header';
 import Loader from './Loader';
 
+// Dashboard is for song selection
 const Dashboard = (props) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [selectedCategory, setSelectedCategory] = useState('albums');
