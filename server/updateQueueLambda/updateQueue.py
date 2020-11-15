@@ -1,5 +1,6 @@
 import boto3
 import json
+import requests
 
 dynamodb = boto3.client('dynamodb', region_name='us-east-1')
 apiMgmt = boto3.client('apigatewaymanagementapi', region_name='us-east-1', endpoint_url='https://8mvqn1b54i.execute-api.us-east-1.amazonaws.com/production/')
@@ -48,7 +49,27 @@ def lambda_handler(event, context):
 
     # TODO: Determine which song in leaderboard is the lowest
     
-    songURI = 'here'  # TODO: CHANGE WHEN DONE TESTING
+    songURI = ''  # TODO: CHANGE WHEN DONE TESTING
+    highest_votes = 0
+    for uri in leaderboard:
+        votes = int(leaderboard[uri]["N"])
+
+        if(votes > highest_votes):
+            highest_votes = votes 
+            songURI = uri
+    
+    spotify_header = {
+        "Authorization": "Bearer " + spotify_token 
+    }
+
+    try:
+        requests.post("https://api.spotify.com/v1/me/player/queue?uri=" + songURI, headers=spotify_header)
+    except Exception as err:
+        print(err)
+        return {
+            "statusCode": 500,
+            "body": "Failed to update spotify queue"
+        }
 
     # ========================================================
 
