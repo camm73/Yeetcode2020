@@ -45,7 +45,9 @@ def lambda_handler(event, context):
                 "M": {}  # Empty leaderboard
             },
             "clients": {
-                "L": []
+                "L": [{
+                    "S": clientID
+                }]
             }
         })
         print('Created new game entry in table')

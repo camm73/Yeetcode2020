@@ -8,6 +8,7 @@ TABLE = 'Yeetcode2020-Data'
 
 def lambda_handler(event, context):
 
+    host_id = event['requestContext']['connectionId']
     data_packet = event['body']
     data_packet = json.loads(data_packet)
     print(data_packet)
@@ -46,6 +47,10 @@ def lambda_handler(event, context):
     # Disconnect all users
     for entry in clients:
         connID = entry['S']
+        # Skip the host
+        if(connID == host_id):
+            print('Skipping host:', connID)
+            continue
         try:
             apiMgmt.delete_connection(ConnectionId=connID)
         except Exception as e:
@@ -70,6 +75,14 @@ def lambda_handler(event, context):
             "statusCode": 500,
             "body": ""
         }
+
+    # Disconnect host
+    try:
+        apiMgmt.delete_connection(ConnectionId=host_id)
+    except Exception as e:
+        print(e)
+        print('Failed to disconnect host:', host_id)
+    
 
     return {
         'statusCode': 200,

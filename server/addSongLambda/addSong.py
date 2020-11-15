@@ -62,7 +62,8 @@ def lambda_handler(event, context):
                         "N": "1"
                     }
                 },
-                UpdateExpression="set leaderboard.#uri = leaderboard.#uri + :v"
+                UpdateExpression="set leaderboard.#uri = leaderboard.#uri + :v",
+                ReturnValues='ALL_NEW'
             )
             print(update_res)
         except Exception as e:
