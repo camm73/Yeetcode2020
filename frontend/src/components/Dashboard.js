@@ -16,8 +16,9 @@ import Loader from './Loader';
 
 // Dashboard is for song selection
 const Dashboard = (props) => {
+	const defaultPage = 'tracks';
 	const [isLoading, setIsLoading] = useState(false);
-	const [selectedCategory, setSelectedCategory] = useState('albums');
+	const [selectedCategory, setSelectedCategory] = useState(defaultPage);
 	const { isValidSession, history } = props;
 
 	const handleSearch = (searchTerm) => {
@@ -25,7 +26,7 @@ const Dashboard = (props) => {
 			setIsLoading(true);
 			props.dispatch(initiateGetResult(searchTerm)).then(() => {
 				setIsLoading(false);
-				setSelectedCategory('albums');
+				setSelectedCategory(defaultPage);
 			});
 		} else {
 			history.push({

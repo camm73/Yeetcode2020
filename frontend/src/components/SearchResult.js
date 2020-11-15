@@ -27,6 +27,14 @@ const SearchResult = (props) => {
 	return (
 		<React.Fragment>
 			<div className="search-buttons">
+				{!_.isEmpty(tracks.items) && (
+					<button
+						className={`${selectedCategory === 'tracks' ? 'btn active' : 'btn'}`}
+						onClick={() => setCategory('tracks')}
+					>
+						Tracks
+					</button>
+				)}
 				{!_.isEmpty(albums.items) && (
 					<button
 						className={`${selectedCategory === 'albums' ? 'btn active' : 'btn'}`}
@@ -51,14 +59,6 @@ const SearchResult = (props) => {
 						PlayLists
 					</button>
 				)}
-				{!_.isEmpty(tracks.items) && (
-					<button
-						className={`${selectedCategory === 'tracks' ? 'btn active' : 'btn'}`}
-						onClick={() => setCategory('tracks')}
-					>
-						Tracks
-					</button>
-				)}
 			</div>
 			<div className={`${selectedCategory === 'albums' ? '' : 'hide'}`}>
 				{albums && <AlbumsList albums={albums} />}
@@ -66,11 +66,11 @@ const SearchResult = (props) => {
 			<div className={`${selectedCategory === 'artists' ? '' : 'hide'}`}>
 				{artists && <ArtistsList artists={artists} />}
 			</div>
-			<div className={`${selectedCategory === 'playlist' ? '' : 'hide'}`}>
-				{playlist && <PlayList playlist={playlist} />}
-			</div>
 			<div className={`${selectedCategory === 'tracks' ? '' : 'hide'}`}>
 				{tracks && <TracksList tracks={tracks} />}
+			</div>
+			<div className={`${selectedCategory === 'playlist' ? '' : 'hide'}`}>
+				{playlist && <PlayList playlist={playlist} />}
 			</div>
 			{!_.isEmpty(result[selectedCategory]) && !_.isEmpty(result[selectedCategory].next) && (
 				<div className="load-more" onClick={() => loadMore(selectedCategory)}>

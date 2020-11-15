@@ -19,7 +19,6 @@ const Home = (props) => {
 	return (
 		<React.Fragment>
 			{isValidSession() ? (
-				// <Redirect to="/dashboard" />
 				<Redirect to="/join" />
 			) : (
 				<div className="login">
