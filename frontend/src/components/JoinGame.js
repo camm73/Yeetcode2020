@@ -35,8 +35,6 @@ const JoinGame = (props) => {
 					<Button type="submit" fullWidth color="secondary">
 						Create Game!
 					</Button>
-
-					<Post />
 				</ListGroup>
 			</form>
 		</React.Fragment>
