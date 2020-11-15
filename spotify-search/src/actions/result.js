@@ -59,6 +59,8 @@ export const initiateGetResult = (searchTerm) => {
 			const result = await get(API_URL);
 			console.log(result);
 			const { albums, artists, playlists, tracks } = result;
+			console.log(tracks);
+
 			dispatch(setAlbums(albums));
 			dispatch(setArtists(artists));
 			dispatch(setPlayList(playlists));

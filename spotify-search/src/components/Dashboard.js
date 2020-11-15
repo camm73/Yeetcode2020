@@ -41,6 +41,9 @@ const Dashboard = (props) => {
 			const { dispatch, albums, artists, playlist, tracks } = props;
 			setIsLoading(true);
 			switch (type) {
+				case 'tracks':
+					await dispatch(initiateLoadMoreTracks(tracks.next));
+					break;
 				case 'albums':
 					await dispatch(initiateLoadMoreAlbums(albums.next));
 					break;
@@ -49,9 +52,6 @@ const Dashboard = (props) => {
 					break;
 				case 'playlist':
 					await dispatch(initiateLoadMorePlaylist(playlist.next));
-					break;
-				case 'tracks':
-					await dispatch(initiateLoadMoreTracks(tracks.next));
 					break;
 				default:
 			}

@@ -11,9 +11,6 @@ const SearchResult = (props) => {
 	const { isValidSession, loadMore, result, setCategory, selectedCategory } = props;
 	const { albums, artists, playlist, tracks } = result;
 
-	console.log(tracks.items);
-	console.log(artists.items);
-
 	if (!isValidSession()) {
 		return (
 			<Redirect
@@ -73,7 +70,7 @@ const SearchResult = (props) => {
 				{playlist && <PlayList playlist={playlist} />}
 			</div>
 			<div className={`${selectedCategory === 'tracks' ? '' : 'hide'}`}>
-				{tracks && <TracksList playlist={tracks} />}
+				{tracks && <TracksList tracks={tracks} />}
 			</div>
 			{!_.isEmpty(result[selectedCategory]) && !_.isEmpty(result[selectedCategory].next) && (
 				<div className="load-more" onClick={() => loadMore(selectedCategory)}>
