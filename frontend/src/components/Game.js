@@ -14,7 +14,8 @@ const useStyles = makeStyles((theme) => ({
 export default function Game() {
 	const classes = useStyles();
 
-	const listItems = tracks.map((t) => <Post songName={t.songName} artist={t.artist} />);
+	// const listItems = tracks.map((t) => <Post songName={t.songName} artist={t.artist} />);
 
-	return <List className={classes.root} {...listItems}></List>;
+	// return <List className={classes.root} {...listItems}></List>;
+	return <p></p>;
 }

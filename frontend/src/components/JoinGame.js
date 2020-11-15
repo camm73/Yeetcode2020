@@ -5,6 +5,7 @@ import { Button } from 'react-bootstrap';
 import Header from './Header';
 import { Redirect } from 'react-router-dom';
 import { TextField } from '@material-ui/core';
+import Post from './Post';
 
 const JoinGame = (props) => {
 	const handleJoinGame = () => {};
@@ -34,6 +35,8 @@ const JoinGame = (props) => {
 					<Button type="submit" fullWidth color="secondary">
 						Create Game!
 					</Button>
+
+					<Post />
 				</ListGroup>
 			</form>
 		</React.Fragment>

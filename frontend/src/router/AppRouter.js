@@ -46,6 +46,11 @@ class AppRouter extends React.Component {
 							render={(props) => <Home isValidSession={this.isValidSession} {...props} />}
 						/>
 						<Route
+							path="/home"
+							exact={true}
+							render={(props) => <Home isValidSession={this.isValidSession} {...props} />}
+						/>
+						<Route
 							path="/redirect"
 							render={(props) => (
 								<RedirectPage
